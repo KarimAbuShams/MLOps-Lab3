@@ -1,5 +1,5 @@
-# Base image with Python 3.13
-FROM python:3.13-slim AS base
+# CAMBIO 1: Usar Python 3.11 (Necesario para PyTorch/ONNX en Lab 3)
+FROM python:3.11-slim AS base
 
 # Recommended environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -30,10 +30,16 @@ RUN uv pip install --system --no-cache .
 FROM base AS runtime
 # Copy the installed dependencies
 COPY --from=builder /usr/local /usr/local
+
 # Copy the source code of the API, logic and home.html
 COPY api ./api
 COPY mylib ./mylib
 COPY templates ./templates
+
+# CAMBIO 2: Copiar el modelo y las etiquetas (CRÍTICO para Lab 3)
+COPY model.onnx .
+COPY classes.json .
+
 # Expose the port associated with the API created with FastAPI
 EXPOSE 8000
 # Default command: it starts the API with uvicorn
