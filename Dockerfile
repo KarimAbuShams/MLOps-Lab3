@@ -38,6 +38,7 @@ COPY templates ./templates
 
 # CAMBIO 2: Copiar el modelo y las etiquetas (CRÍTICO para Lab 3)
 COPY model.onnx .
+COPY model.onnx.data .
 COPY classes.json .
 
 # Expose the port associated with the API created with FastAPI
